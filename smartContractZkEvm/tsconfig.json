@@ -8,6 +8,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "include": ["./test", "./src", "./scripts"],
-  "files": ["./hardhat.config.ts"]
+  "include": ["./test", "./src", "./scripts", "next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js"],
+  "files": ["./hardhat.config.ts"],
+  "exclude": ["node_modules"]
 }

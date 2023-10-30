@@ -12,7 +12,6 @@ const Hash: React.FC<InfoHashProps> = ({ setshow }) => {
   });
   const Txn = useContext(TxnHashContext);
   const Hashes = useContext(HashContext);
-  const Load = useContext(LoadContext);
 
   const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
     color: `${theme.palette.getContrastText(purple[500])} !important`,
@@ -41,7 +40,7 @@ const Hash: React.FC<InfoHashProps> = ({ setshow }) => {
           <div className="flex flex-col font-bold items-center mb-2">
             <p className="text-xl text-slate-600 mb-2">Purchase Was Successful</p>
             <p className="border-b border-gray-300 pb-2 mr-2 flex-grow">
-              <span className="font-bold flex flex-row items-center">Hash: &nbsp; {Load[0] ?
+              <span className="font-bold flex flex-row items-center">Hash: &nbsp; {Txn[0].length > 0 ?
                  <svg className="animate-spin w-5 h-5 fill-slate-800" viewBox="3 3 18 18">
                  <path className="opacity-20" d="M12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z">
                  </path>

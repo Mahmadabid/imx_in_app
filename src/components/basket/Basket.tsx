@@ -19,7 +19,6 @@ import { ethers } from 'ethers'
 import { ContractAddress, ContractABI } from "../ContractDetails";
 
 export const Basket = () => {
-    const Loading = useContext(LoadContext);
     const dispatch = useDispatch();
     const products = useSelector((state: State) => state.basket);
     const islit = useSelector((state: State) => state.themes.value);
@@ -59,7 +58,6 @@ export const Basket = () => {
 
     const handleClick = () => {
         if (items === 0) return;
-        Loading[1](true);
         sendTransaction();
         Hashes[1](true);
         dispatch(clearBasket());
