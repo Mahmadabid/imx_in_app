@@ -2,21 +2,25 @@ import Layout from '@/components/Layout';
 import { UserObject } from '@/global/Types';
 import { store } from '@/store/Store';
 import '@/styles/globals.css'
-import { HashContext, PassportContext, UserContext, UserDataContext, UserInfoContext } from '@/utils/Context';
+import { HashContext, LoadContext, PassportContext, SignerContext, TxnHashContext, UserContext, UserDataContext, UserInfoContext } from '@/utils/Context';
 import { createPassportInstance } from '@/utils/user/Passport';
 import { passport } from '@imtbl/sdk';
 import type { AppProps } from 'next/app'
 import { useState, useEffect } from 'react';
 import { Provider } from 'react-redux';
+import { ethers } from 'ethers';
 
 export default function App({ Component, pageProps }: AppProps) {
 
   const [User, setUser] = useState(false);
   const [Hash, setHash] = useState(false);
   const [Log, setLog] = useState(false);
+  const [Load, setLoad] = useState(false);
   const [passport, setPassport] = useState<passport.Passport | null>(null);
+  const [Signer, setSigner] = useState<ethers.Signer | null>(null);
   const [UserInfo, setUserInfo] = useState<UserObject | null>(null);
   const [UserData, setUserData] = useState('');
+  const [Txn, setTxn] = useState('');
 
   useEffect(() => {
     function initializePassport() {
@@ -44,19 +48,25 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <PassportContext.Provider value={[passport, setPassport]}>
-      <UserContext.Provider value={[User, setUser]}>
-        <HashContext.Provider value={[Hash, setHash]}>
-          <UserInfoContext.Provider value={[UserInfo, setUserInfo]}>
-            <UserDataContext.Provider value={[UserData, setUserData]}>
-              <Provider store={store}>
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
-              </Provider>
-            </UserDataContext.Provider>
-          </UserInfoContext.Provider>
-        </HashContext.Provider>
-      </UserContext.Provider>
+      <SignerContext.Provider value={[Signer, setSigner]}>
+        <UserContext.Provider value={[User, setUser]}>
+          <TxnHashContext.Provider value={[Txn, setTxn]}>
+            <HashContext.Provider value={[Hash, setHash]}>
+              <LoadContext.Provider value={[Load, setLoad]}>
+                <UserInfoContext.Provider value={[UserInfo, setUserInfo]}>
+                  <UserDataContext.Provider value={[UserData, setUserData]}>
+                    <Provider store={store}>
+                      <Layout>
+                        <Component {...pageProps} />
+                      </Layout>
+                    </Provider>
+                  </UserDataContext.Provider>
+                </UserInfoContext.Provider>
+              </LoadContext.Provider>
+            </HashContext.Provider>
+          </TxnHashContext.Provider>
+        </UserContext.Provider>
+      </SignerContext.Provider>
     </PassportContext.Provider>
   );
 }

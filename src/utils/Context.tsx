@@ -1,6 +1,7 @@
 import { ProductItem, UserObject } from '../global/Types';
 import { passport } from '@imtbl/sdk';
 import { Dispatch, SetStateAction, createContext } from 'react'
+import { ethers } from 'ethers';
 
 export const initialState: ProductItem[] = [
     {
@@ -34,8 +35,14 @@ export const UserContext = createContext<[boolean, Dispatch<SetStateAction<boole
 
 export const HashContext = createContext<[boolean, Dispatch<SetStateAction<boolean>>]>(([false, () => { }]));
 
+export const LoadContext = createContext<[boolean, Dispatch<SetStateAction<boolean>>]>(([false, () => { }]));
+
 export const UserDataContext = createContext<[string, Dispatch<SetStateAction<string>>]>((['', () => { }]));
 
+export const TxnHashContext = createContext<[string, Dispatch<SetStateAction<string>>]>((['', () => { }]));
+
 export const PassportContext = createContext<[passport.Passport | null, Dispatch<SetStateAction<passport.Passport | null>>]>([null, () => { }])
+
+export const SignerContext = createContext<[ethers.Signer | null, Dispatch<SetStateAction<ethers.Signer | null>>]>([null, () => { }])
 
 export const UserInfoContext = createContext<[UserObject | null, Dispatch<SetStateAction<UserObject | null>>]>([null, () => { }]);

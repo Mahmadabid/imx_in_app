@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
     List,
     ListItem,
@@ -14,18 +14,53 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import { ProductItem, State } from "../../global/Types";
 import { clearBasket, remove } from "../../slice/BasketSlice";
-import { HashContext } from "@/utils/Context";
+import { HashContext, LoadContext, PassportContext, SignerContext, TxnHashContext, UserContext, UserInfoContext } from "@/utils/Context";
+import { ethers } from 'ethers'
+import { ContractAddress, ContractABI } from "../ContractDetails";
 
 export const Basket = () => {
+    const Loading = useContext(LoadContext);
     const dispatch = useDispatch();
     const products = useSelector((state: State) => state.basket);
     const islit = useSelector((state: State) => state.themes.value);
     const Hashes = useContext(HashContext);
-
+    const User = useContext(UserContext);
+    const TxnHash = useContext(TxnHashContext);
+    const Signer = useContext(SignerContext);
+    const passportProvider = useContext(PassportContext);
+    const passport = passportProvider[0];
     const items = products.filter((product: ProductItem) => product.added).length
+
+    useEffect(() => {
+        async function getWallet() {
+            if (!passport) return;
+            const Provider = passport.connectEvm();
+            const provider = new ethers.providers.Web3Provider(Provider);
+            await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner();
+            Signer[1](signer);
+        }
+
+        getWallet();
+    }, [User[0]]);
+
+    async function sendTransaction() {
+        if (!Signer[0]) {
+            console.error("Signer is not set!");
+            return;
+        }
+
+        const contract = new ethers.Contract(ContractAddress, ContractABI.abi, Signer[0]);
+        const txResponse = await contract.set('Your Purchase was Successful');
+        TxnHash[1](txResponse.hash);
+        console.log("Transaction hash:", txResponse.hash);
+        return txResponse.hash;
+    }
 
     const handleClick = () => {
         if (items === 0) return;
+        Loading[1](true);
+        sendTransaction();
         Hashes[1](true);
         dispatch(clearBasket());
     }
