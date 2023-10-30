@@ -1,6 +1,4 @@
-import hre from "hardhat";
-
-const { ethers } = hre;
+import { ethers } from 'hardhat'
 
 async function main() {
 
