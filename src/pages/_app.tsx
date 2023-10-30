@@ -2,7 +2,7 @@ import Layout from '@/components/Layout';
 import { UserObject } from '@/global/Types';
 import { store } from '@/store/Store';
 import '@/styles/globals.css'
-import { HashContext, LoadContext, PassportContext, SignerContext, TxnHashContext, UserContext, UserDataContext, UserInfoContext } from '@/utils/Context';
+import { HashContext, PassportContext, SignerContext, TxnHashContext, UserContext, UserDataContext, UserInfoContext } from '@/utils/Context';
 import { createPassportInstance } from '@/utils/user/Passport';
 import { passport } from '@imtbl/sdk';
 import type { AppProps } from 'next/app'
@@ -15,7 +15,6 @@ export default function App({ Component, pageProps }: AppProps) {
   const [User, setUser] = useState(false);
   const [Hash, setHash] = useState(false);
   const [Log, setLog] = useState(false);
-  const [Load, setLoad] = useState(false);
   const [passport, setPassport] = useState<passport.Passport | null>(null);
   const [Signer, setSigner] = useState<ethers.Signer | null>(null);
   const [UserInfo, setUserInfo] = useState<UserObject | null>(null);
@@ -52,17 +51,15 @@ export default function App({ Component, pageProps }: AppProps) {
         <UserContext.Provider value={[User, setUser]}>
           <TxnHashContext.Provider value={[Txn, setTxn]}>
             <HashContext.Provider value={[Hash, setHash]}>
-              <LoadContext.Provider value={[Load, setLoad]}>
-                <UserInfoContext.Provider value={[UserInfo, setUserInfo]}>
-                  <UserDataContext.Provider value={[UserData, setUserData]}>
-                    <Provider store={store}>
-                      <Layout>
-                        <Component {...pageProps} />
-                      </Layout>
-                    </Provider>
-                  </UserDataContext.Provider>
-                </UserInfoContext.Provider>
-              </LoadContext.Provider>
+              <UserInfoContext.Provider value={[UserInfo, setUserInfo]}>
+                <UserDataContext.Provider value={[UserData, setUserData]}>
+                  <Provider store={store}>
+                    <Layout>
+                      <Component {...pageProps} />
+                    </Layout>
+                  </Provider>
+                </UserDataContext.Provider>
+              </UserInfoContext.Provider>
             </HashContext.Provider>
           </TxnHashContext.Provider>
         </UserContext.Provider>

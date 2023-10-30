@@ -14,7 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import { ProductItem, State } from "../../global/Types";
 import { clearBasket, remove } from "../../slice/BasketSlice";
-import { HashContext, LoadContext, PassportContext, SignerContext, TxnHashContext, UserContext, UserInfoContext } from "@/utils/Context";
+import { HashContext, PassportContext, SignerContext, TxnHashContext, UserContext, UserInfoContext } from "@/utils/Context";
 import { ethers } from 'ethers'
 import { ContractAddress, ContractABI } from "../ContractDetails";
 
@@ -59,13 +59,13 @@ export const Basket = () => {
     const handleClick = () => {
         if (items === 0) return;
         sendTransaction();
-        Hashes[1](true);
         dispatch(clearBasket());
+        Hashes[1](true);
     }
 
     return (
         <>
-            <div className="flex justify-between items-center px-2">
+            <div className="flex justify-between items-center mt-4 px-2">
                 <div>
                     <h2 className="text-primary mt-5 text-lg font-semibold">Shopping Basket</h2>
                     <div className="text-base">

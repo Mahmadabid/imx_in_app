@@ -1,11 +1,9 @@
 import { useContext } from "react";
-import { PassportContext, SignerContext } from "../Context";
-import { ethers } from "ethers";
+import { PassportContext } from "../Context";
 
 export const useAuthentication = () => {
     const passportProvider = useContext(PassportContext);
     const passport = passportProvider[0];
-    const Signer = useContext(SignerContext);
 
     const logIn = async () => {
         if (!passport) return;
