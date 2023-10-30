@@ -23,5 +23,8 @@
     "solidity-coverage": "^0.8.1",
     "ts-node": "^10.9.1",
     "typechain": "^8.1.0"
+  },
+  "devDependencies": {
+    
   }
 }
