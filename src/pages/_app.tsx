@@ -45,6 +45,20 @@ export default function App({ Component, pageProps }: AppProps) {
     initializePassport();
   }, [Log]);
 
+
+  useEffect(() => {
+    async function getWallet() {
+      if (!passport) return;
+      const Provider = passport.connectEvm();
+      const provider = new ethers.providers.Web3Provider(Provider);
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+      setSigner(signer);
+    }
+
+    getWallet();
+  }, [User]);
+
   return (
     <PassportContext.Provider value={[passport, setPassport]}>
       <SignerContext.Provider value={[Signer, setSigner]}>
