@@ -101,3 +101,43 @@ const handleLoginCallback = () => {
     }
 }
 ```
+Create a new Page you can name it however you like. We are going with *callback.tsx*.
+Now define a useEffect in our page. This will rerender everytime handleLoginCallback will change
+```ruby
+useEffect(() => {
+  handleLoginCallback();
+  window.close();
+
+}, [handleLoginCallback]);
+```
+
+### 6.Logout the User
+For logout create this function
+```ruby
+const logOut = async () => {
+    await passport?.logout();
+};
+```
+This will logout you.
+### 7. Display the details of User
+Once logged in you can use 
+```ruby
+const userProfile = await passport?.getUserInfo();
+```
+This will give you the details of user
+> Email
+
+> Nickname
+
+> sub
+
+You can extract Nickname using
+```ruby
+const nickname = userProfile.nickname
+```
+For getting  id token and access token. We will use similar commands
+```ruby
+const accessToken: string | undefined = await passport.getAccessToken();
+const idToken: string | undefined = await passport.getIdToken();
+```
+You can display them wherever you like in the [Sample App](https://imxinapp.vercel.app/). They are displayed on homepage.
