@@ -2,6 +2,7 @@
 In this guide, you will learn how to integrate immutable passport with your app.
 #### Github Repo and Sample App
 [Github Repo](https://github.com/Mahmadabid/imx_in_app)
+
 [Sample App](https://imxinapp.vercel.app/)
 ### Prerequisites 
 1. [Node.js](https://nodejs.org/)
@@ -12,6 +13,6 @@ Follow these steps
 ### 1. Create a simple application or clone this repository 
 You can create a new application using this command
 
-ruby ```
+ruby```
 npx create-next-app@latest
 ```
