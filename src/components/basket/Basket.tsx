@@ -117,7 +117,7 @@ export const Basket = () => {
                     ))}
             </List>
             {!Signer[0] ? <div className="text-red-500 font-bold text-center">Loading! Please wait</div> : null}
-            <div className="flex justify-center items-center my-4 disabled={items === 0}">
+            <div className="flex justify-center items-center py-4 disabled={items === 0}">
                 <button onClick={handleClick} className={`px-6 py-2 rounded ${items === 0 ? 'bg-gray-400 cursor-not-allowed' : ' bg-emerald-600 text-white hover:bg-sky-500'}`}>{Signer[0] ?
                     <>Buy</> :
                     <svg className="animate-spin w-5 h-5 fill-white" viewBox="3 3 18 18">
