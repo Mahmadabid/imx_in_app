@@ -44,3 +44,60 @@ If you have created a new app use this command
 ```ruby
 npm install -D @imtbl/sdk
 ```
+
+### 4. Initialize the Passport
+```ruby
+import { config, passport  } from '@imtbl/sdk';
+
+const passportInstance = new passport.Passport({
+  baseConfig: new config.ImmutableConfiguration({
+    environment: config.Environment.SANDBOX,
+  }),
+  clientId: '<YOUR_CLIENT_ID>',
+  redirectUri: 'https://example.com',
+  logoutRedirectUri: 'https://example.com/logout',
+  audience: 'platform_api',
+  scope: 'openid offline_access email transact'
+});
+```
+Replace *<YOUR_CLIENT_ID>* with Client ID from the Immutable hub account
+And *https://example.com* in *redirectUri* and *logoutRedirectUri* with the URL of your app. It will look like this
+```ruby
+const passportInstance = new passport.Passport({
+  baseConfig: new config.ImmutableConfiguration({
+    environment: config.Environment.SANDBOX,
+  }),
+  clientId: 'JcBY1mTWnG67FHjlvVM4p3kyse7VtSy',
+  redirectUri: 'https://imxinapp.vercel.app/',
+  logoutRedirectUri: 'https://imxinapp.vercel.app/logout',
+  audience: 'platform_api',
+  scope: 'openid offline_access email transact'
+});
+```
+### 5. Login the User
+```ruby
+const logIn = async () => {
+  try {
+    const provider = passportInstance?.connectEvm();
+    await provider?.request({ method: "eth_requestAccounts" });
+
+  } catch (error) {
+    console.error("Login error:", error);
+  }
+};
+```
+This is the login Function that will be used to login.
+Now for Callback that will handle our redirect URL
+```ruby
+passport.loginCallback();
+```
+we will use this. 
+```ruby
+const handleLoginCallback = () => {
+    if (passport) {
+        passport.loginCallback();
+    } else {
+        console.error("Passport instance is not available.");
+    }
+}
+```
