@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -8,23 +8,29 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTheme } from '../../slice/ThemeSlice';
 import { State } from '../../global/Types';
-import { UserContext, UserInfoContext } from '@/utils/Context';
+import { PassportContext, UserContext, UserInfoContext } from '@/utils/Context';
 import { useAuthentication } from '@/utils/user/userAuthentication';
 
 export const Header = () => {
     const dispatch = useDispatch();
     const islit = useSelector((state: State) => state.themes.value);
-
+    const [log, setlog] = useState(false);
     const { logIn, logOut } = useAuthentication();
     const [User, setUser] = useContext(UserContext);
     const [_, setUserInfo] = useContext(UserInfoContext);
+    const Passport = useContext(PassportContext);
+    const passport = Passport[0];
+    const [userData, setUserData] = useState({
+        email: '',
+        sub: '',
+        nickname: '',
+        idToken: '',
+        accessToken: ''
+    });
 
     useEffect(() => {
         function handleAuthSuccess(event: MessageEvent) {
             if (event.data.type === 'authSuccess') {
-                let attempts = 0;
-                const maxAttempts = 6;
-
                 const intervalId = setInterval(() => {
                     const key = `oidc.user:https://auth.immutable.com:${process.env.NEXT_PUBLIC_CLIENT_ID}`;
                     const userData = localStorage.getItem(key);
@@ -32,15 +38,19 @@ export const Header = () => {
                         try {
                             const parsedData = JSON.parse(userData);
                             setUser(true);
-                            setUserInfo(parsedData);
+                            setUserData({
+                                email: parsedData.profile?.email,
+                                sub: parsedData.profile?.sub,
+                                nickname: '',
+                                idToken: parsedData?.id_token,
+                                accessToken: parsedData?.access_token,
+                            });
+                            setlog(true);
                             clearInterval(intervalId);
                         } catch (error) {
                             console.error("Error parsing user data from localStorage:", error);
                         }
-                    } else if (attempts >= maxAttempts) {
-                        clearInterval(intervalId);
                     }
-                    attempts++;
                 }, 700);
             }
         }
@@ -51,6 +61,24 @@ export const Header = () => {
             window.removeEventListener('message', handleAuthSuccess);
         };
     }, []);
+
+    useEffect(() => {
+        let nickname = '';
+        async function userNickname() {
+            const data = await passport?.getUserInfo();
+            nickname = data?.nickname || '';
+        }
+        if (passport && log) {
+            userNickname();
+            setUserInfo({
+                email: userData.email,
+                sub: userData.sub,
+                nickname: nickname,
+                idToken: userData.idToken,
+                accessToken: userData.accessToken
+            })
+        }
+    }, [passport, log, userData])
 
     return (
         <div style={{ flexGrow: 1, width: '100vw' }}>

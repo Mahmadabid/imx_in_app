@@ -35,7 +35,7 @@ export const UserContext = createContext<[boolean, Dispatch<SetStateAction<boole
 
 export const HashContext = createContext<[boolean, Dispatch<SetStateAction<boolean>>]>(([false, () => { }]));
 
-export const UserDataContext = createContext<[string, Dispatch<SetStateAction<string>>]>((['', () => { }]));
+export const ErrorContext = createContext<[string, Dispatch<SetStateAction<string>>]>((['', () => { }]));
 
 export const TxnHashContext = createContext<[string, Dispatch<SetStateAction<string>>]>((['', () => { }]));
 

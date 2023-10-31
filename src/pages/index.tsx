@@ -21,7 +21,7 @@ function Home() {
       {User[0] ? show ? Hashes[0] ?
         <Hash setshow={setshow} /> :
         <ShoppingBasket /> :
-        <Info User={User[0]} setshow={setshow} /> :
+        <Info setshow={setshow} /> :
         <div className='flex flex-col items-center justify-center flex-grow mt-8'>
           <Login />
         </div>

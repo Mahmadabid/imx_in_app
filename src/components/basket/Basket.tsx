@@ -14,7 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import { ProductItem, State } from "../../global/Types";
 import { clearBasket, remove } from "../../slice/BasketSlice";
-import { HashContext, PassportContext, SignerContext, TxnHashContext, UserContext, UserInfoContext } from "@/utils/Context";
+import { ErrorContext, HashContext, SignerContext, TxnHashContext } from "@/utils/Context";
 import { ethers } from 'ethers'
 import { ContractAddress, ContractABI } from "../ContractDetails";
 
@@ -25,6 +25,8 @@ export const Basket = () => {
     const Hashes = useContext(HashContext);
     const TxnHash = useContext(TxnHashContext);
     const Signer = useContext(SignerContext);
+    const TxnError = useContext(ErrorContext);
+
     const items = products.filter((product: ProductItem) => product.added).length
 
     async function sendTransaction() {
@@ -33,11 +35,22 @@ export const Basket = () => {
             return;
         }
 
-        const contract = new ethers.Contract(ContractAddress, ContractABI.abi, Signer[0]);
-        const txResponse = await contract.set('Your Purchase was Successful');
-        TxnHash[1](txResponse.hash);
-        console.log("Transaction hash:", txResponse.hash);
-        return txResponse.hash;
+        const balance = await Signer[0].getBalance();
+        const balanceValue = balance.toString();
+
+        if (balanceValue === '0') {
+            TxnError[1]('Your Wallet is empty. Recharge your wallet to make a transaction.')
+            return;
+        }
+
+        try {
+            const contract = new ethers.Contract(ContractAddress, ContractABI.abi, Signer[0]);
+            const txResponse = await contract.set('Your Purchase was Successful');
+            TxnHash[1](txResponse.hash);
+            return txResponse.hash;
+        } catch (error) {
+            TxnError[1](error.message)
+        }
     }
 
     const handleClick = () => {

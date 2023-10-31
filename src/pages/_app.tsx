@@ -2,7 +2,7 @@ import Layout from '@/components/Layout';
 import { UserObject } from '@/global/Types';
 import { store } from '@/store/Store';
 import '@/styles/globals.css'
-import { HashContext, PassportContext, SignerContext, TxnHashContext, UserContext, UserDataContext, UserInfoContext } from '@/utils/Context';
+import { HashContext, PassportContext, SignerContext, TxnHashContext, UserContext, ErrorContext, UserInfoContext } from '@/utils/Context';
 import { createPassportInstance } from '@/utils/user/Passport';
 import { passport } from '@imtbl/sdk';
 import type { AppProps } from 'next/app'
@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const [passport, setPassport] = useState<passport.Passport | null>(null);
   const [Signer, setSigner] = useState<ethers.Signer | null>(null);
   const [UserInfo, setUserInfo] = useState<UserObject | null>(null);
-  const [UserData, setUserData] = useState('');
+  const [Error, setError] = useState('');
   const [Txn, setTxn] = useState('');
 
   useEffect(() => {
@@ -26,29 +26,32 @@ export default function App({ Component, pageProps }: AppProps) {
       const instance = createPassportInstance();
       setPassport(instance);
 
-      const key = `oidc.user:https://auth.immutable.com:${process.env.NEXT_PUBLIC_CLIENT_ID}`;
-      const userData = localStorage.getItem(key);
+      async function UserProfile() {
+        const user = await passport?.getUserInfo();
+        const accessToken: string | undefined = await passport?.getAccessToken();
+        const idToken: string | undefined = await passport?.getIdToken();
 
-      if (userData) {
-        try {
-          const parsedData: UserObject = JSON.parse(userData);
-          setUserInfo(parsedData);
+        if (user) {
+          setUserInfo({ ...user, accessToken, idToken });
           setUser(true);
-        } catch (error) {
-          console.error("Error parsing user data from localStorage:", error);
+        } else {
+          setLog(true);
         }
-      } else {
-        setLog(true)
       }
+
+      UserProfile();
+
     }
 
     initializePassport();
   }, [Log]);
 
 
+
   useEffect(() => {
     async function getWallet() {
       if (!passport) return;
+      if (!User) return;
       const Provider = passport.connectEvm();
       const provider = new ethers.providers.Web3Provider(Provider);
       await provider.send("eth_requestAccounts", []);
@@ -66,13 +69,13 @@ export default function App({ Component, pageProps }: AppProps) {
           <TxnHashContext.Provider value={[Txn, setTxn]}>
             <HashContext.Provider value={[Hash, setHash]}>
               <UserInfoContext.Provider value={[UserInfo, setUserInfo]}>
-                <UserDataContext.Provider value={[UserData, setUserData]}>
+                <ErrorContext.Provider value={[Error, setError]}>
                   <Provider store={store}>
                     <Layout>
                       <Component {...pageProps} />
                     </Layout>
                   </Provider>
-                </UserDataContext.Provider>
+                </ErrorContext.Provider>
               </UserInfoContext.Provider>
             </HashContext.Provider>
           </TxnHashContext.Provider>

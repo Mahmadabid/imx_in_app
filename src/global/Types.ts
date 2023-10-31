@@ -23,7 +23,6 @@ export type CustomAppBarPropsInner = {
 
 export type InfoHashProps = {
     setshow: (value: React.SetStateAction<boolean>) => void;
-    User?: boolean;
 }
 
 export type CustomListItemProps = ListItemProps & {
@@ -43,7 +42,6 @@ export interface ProductItem {
     amount: number
     added?: boolean
 }
-
 interface Passport {
     zkevm_eth_address?: string;
     zkevm_user_admin_address?: string;
@@ -61,7 +59,7 @@ interface Profile {
     sid?: string;
 }
 
-export interface UserObject {
+export interface UserLocalObject {
     id_token?: string;
     session_state?: null;
     access_token?: string;
@@ -70,4 +68,12 @@ export interface UserObject {
     scope?: string;
     profile?: Profile;
     expires_at?: number;
+}
+
+export interface UserObject {
+    email?: string;
+    sub?: string;
+    nickname?: string;
+    idToken?: string | undefined;
+    accessToken?: string | undefined;
 }
