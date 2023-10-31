@@ -15,8 +15,8 @@ export function Product() {
     }
 
     return (
-        <div className="flex-grow">
-            <Grid container spacing={3} className="flex flex-row justify-center mt-5">
+        <div className="flex-grow mt-5">
+            <Grid container spacing={3} className="flex flex-row justify-center">
                 {products.map((product: ProductItem) => (
                     <Card
                         key={product.id}
