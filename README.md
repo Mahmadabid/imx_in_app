@@ -141,3 +141,23 @@ const accessToken: string | undefined = await passport.getAccessToken();
 const idToken: string | undefined = await passport.getIdToken();
 ```
 You can display them wherever you like in the [Sample App](https://imxinapp.vercel.app/). They are displayed on homepage.
+
+### 8. Initiate a Transaction
+We will be using ethers for sending a transaction. 
+so Install ethers
+```ruby
+npm install ethers
+```
+And then we will use this code
+```ruby
+const Provider = passport.connectEvm();
+    const provider = new ethers.providers.Web3Provider(Provider);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(ContractAddress, ContractABI.abi, signer);
+    const txResponse = await contract.set('Your Purchase was Successful');
+    const Hash = txResponse.hash;
+```
+
+This will interact with the Contract Provided in the [Github Repo](https://github.com/Mahmadabid/imx_in_app/blob/main/src/components/basket/Basket.tsx) and initiate a transaction and in response the transaction hash will be provided.
+In [Sample App](https://imxinapp.vercel.app/) You can call this transaction when you buy something from the basket and After a successful transaction. Transation Hash will be displayed.
