@@ -13,6 +13,7 @@ Follow these steps
 ### 1. Create a simple application or clone this repository 
 You can create a new application using this command
 
-ruby```
+ruby
+```
 npx create-next-app@latest
 ```
