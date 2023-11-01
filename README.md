@@ -26,13 +26,13 @@ git clone https://github.com/Mahmadabid/imx_in_app
 ### 2. Register your application on Immutable developer hub
 * Visit the [Immutable developer hub](https://hub.immutable.com/)
 * Login to your app or create a new one if you don't have
-![Immutable hub login page](https://github.com/Mahmadabid/imx_in_app/images/immutablehub.png)
+![Immutable hub login page](https://github.com/Mahmadabid/imx_in_app/blob/main/images/immutablehub.png)
 * Click **Add Project**
 * Give your Project a name and select **Immutable ZkEVM** and click **create**
-![View of Project](https://github.com/Mahmadabid/imx_in_app/images/project.png)
+![View of Project](https://github.com/Mahmadabid/imx_in_app/blob/main/images/project.png)
 * After creating give an environment name and click on testnet
 * In **Passport** Tab, Create a default client
-![Client](https://github.com/Mahmadabid/imx_in_app/images/client.png)
+![Client](https://github.com/Mahmadabid/imx_in_app/blob/main/images/client.png)
 * Save these details
 
 ### 3. Install the dependencies
