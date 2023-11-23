@@ -45,12 +45,15 @@ export const Basket = () => {
 
         try {
             const contract = new ethers.Contract(ContractAddress, ContractABI.abi, Signer[0]);
-            const txResponse = await contract.set('Your Purchase was Successful');
+          
+            const txResponse = await contract.set('Your Purchase was Successful', {
+              gasLimit: ethers.utils.parseUnits('100', 'gwei'),
+            });
             TxnHash[1](txResponse.hash);
             return txResponse.hash;
-        } catch (error) {
-            TxnError[1](error.message)
-        }
+          } catch (error) {
+            TxnError[1](error.message);
+          }
     }
 
     const handleClick = () => {

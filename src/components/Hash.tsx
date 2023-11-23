@@ -2,7 +2,7 @@ import { InfoHashProps, State } from "@/global/Types";
 import { ErrorContext, HashContext, TxnHashContext } from "@/utils/Context";
 import { styled, Button, ButtonProps, Card, CardContent } from "@mui/material";
 import { purple } from "@mui/material/colors";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useSelector } from "react-redux";
 
 const Hash: React.FC<InfoHashProps> = ({ setshow }) => {
@@ -40,7 +40,7 @@ const Hash: React.FC<InfoHashProps> = ({ setshow }) => {
         <CardContent>
           {Txn[0].length === 0 ? TxnError[0] ?
             <div className="flex flex-col font-bold items-center justify-center">
-              <p className="text-xl text-red-600">{TxnError[0]? 'You dont have enough Balance': TxnError[0]}</p>
+              <p className="text-xl text-red-600">{TxnError[0]? 'Transaction Error': TxnError[0]}</p>
               <p className="mt-4 text-sky-800 text-xl">Please Try Again</p>
             </div> :
             <div className="flex flex-col font-bold items-center mb-2">
