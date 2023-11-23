@@ -36,4 +36,4 @@ export const ContractABI = {
     "deployedLinkReferences": {}
 }
 
-export const ContractAddress = '0x06224BeBa9f7bC8C4f68e9c1838D702887d424b5'
+export const ContractAddress = '0x76F5A681B1A246d67c332c05212EDE2305c771cc'
